@@ -34,8 +34,8 @@ func (z *Zoo) Run() {
 	time.Sleep(1 * time.Second)
 	fmt.Printf("Zoo keeper %v: Got you boss!\n", z.keeper.name)
 
-	for _, animal := range z.animals {
-		z.keeper.Catch(animal, &z.cage)
+	for index := range z.animals {
+		z.keeper.Catch(&z.animals[index], &z.cage)
 	}
 
 	fmt.Println("Zoo manager: Good job!")
@@ -45,14 +45,14 @@ type ZooKeeper struct {
 	name string
 }
 
-func (z *ZooKeeper) Catch(a Animal, cage *Cage) {
+func (z *ZooKeeper) Catch(a *Animal, cage *Cage) {
 	fmt.Printf("Zoo keeper %v: Who is here, looks like I see: %v %c\n", z.name, a.name, a.picture)
 	for index := 0; !a.inCage; {
 		time.Sleep(1 * time.Second)
 		guess := rand.Intn(3)
 		if guess == GUESSNUMBER {
 			a.inCage = true
-			cage.animals[index] = a
+			cage.animals[index] = *a
 			fmt.Printf("Got you. %v %c in the cage\n", a.name, a.picture)
 		} else {
 			fmt.Println("Missed it!")
