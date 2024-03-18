@@ -20,10 +20,9 @@ type Quest struct {
 
 func (q *Quest) GetDialogBy(id int) Dialog {
 	var dialog Dialog
-	for i := 0; i < len(q.Dialogs); i++ {
+	for i := range q.Dialogs {
 		if q.Dialogs[i].ID == id {
-			dialog = q.Dialogs[i]
-			break
+			return q.Dialogs[i]
 		}
 	}
 	return dialog
@@ -31,7 +30,7 @@ func (q *Quest) GetDialogBy(id int) Dialog {
 
 func (q *Quest) GetTaskBy(id int) Task {
 	var task Task
-	for i := 0; i < len(q.Tasks); i++ {
+	for i := range q.Tasks {
 		if q.Tasks[i].ID == id {
 			task = q.Tasks[i]
 			break
@@ -160,28 +159,39 @@ func (o *Option) PrintInfo(index int) {
 	fmt.Printf("%v: %v\n", index+1, o.Text)
 }
 
-func getQuestDataFromJson(fileName string, quest *Quest) {
-	jsonFile, err := os.Open("quest.json")
+func getQuestDataFromJson(fileName string) (*Quest, error) {
+	jsonFile, err := os.Open(fileName)
 	if err != nil {
-		fmt.Println(err)
+		return nil, errors.New(err.Error())
 	}
 
 	defer jsonFile.Close()
 
-	byteValue, _ := io.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
+	if err != nil {
+		return nil, errors.New(err.Error())
+	}
 
+	var quest Quest
 	json.Unmarshal(byteValue, &quest)
+	return &quest, nil
 }
 
 func main() {
 
-	var quest Quest
-	getQuestDataFromJson("quest.json", &quest)
+	var quest *Quest
+
+	quest, err := getQuestDataFromJson("quest.json")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(-1)
+	}
+
 	fmt.Printf("%100v\n", quest.Name)
 	fmt.Printf("Задание: %v\n", quest.Goal)
 	fmt.Printf("Описание: %v\n", quest.Description)
 
-	err := quest.Start()
+	err = quest.Start()
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	}
