@@ -13,6 +13,10 @@ import (
 	"time"
 )
 
+var (
+	nonWordSymbolRegex = regexp.MustCompile(`[^a-zA-Z0-9 ]+`)
+)
+
 type editor struct {
 	fileName string
 	content  []string
@@ -60,7 +64,7 @@ func (e *editor) createIndex() error {
 	}
 
 	cleanString := func(str string) string {
-		str = regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(str, "")
+		str = nonWordSymbolRegex.ReplaceAllString(str, "")
 		return strings.ToLower(str)
 	}
 
@@ -68,10 +72,10 @@ func (e *editor) createIndex() error {
 
 	for rowIndex, row := range e.content {
 		rowWords := splitRow(row)
-		for index, str := range rowWords {
-			rowWords[index] = cleanString(str)
-			if !slices.Contains(e.words[rowWords[index]], rowIndex) {
-				e.words[rowWords[index]] = append(e.words[rowWords[index]], rowIndex)
+		for _, str := range rowWords {
+			str = cleanString(str)
+			if !slices.Contains(e.words[str], rowIndex) {
+				e.words[str] = append(e.words[str], rowIndex)
 			}
 		}
 	}
