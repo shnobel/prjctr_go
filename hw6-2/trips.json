@@ -1,0 +1,73 @@
+{
+    "info": [
+        {
+          "from": "Kiev",
+          "to": "New York",
+          "path": [
+            {
+              "transport_type": "bus",
+              "from": "Kiev",
+              "to": "Berlin"
+            },
+            {
+              "transport_type": "train",
+              "from": "Berlin",
+              "to": "Paris"
+            },
+            {
+              "transport_type": "airplane",
+              "from": "Paris",
+              "to": "New York"
+            }
+          ]
+        },
+        {
+          "from": "Mallorca",
+          "to": "Anchorage",
+          "path": [
+            {
+              "transport_type": "bus",
+              "from": "Mallorca",
+              "to": "Madrid"
+            },
+            {
+              "transport_type": "train",
+              "from": "Madrid",
+              "to": "Paris"
+            },
+            {
+              "transport_type": "airplane",
+              "from": "Paris",
+              "to": "Anchorage"
+            }
+          ]
+        },
+        {
+            "from": "Los Angeles",
+            "to": "Washington",
+            "path": [
+              {
+                "transport_type": "airplane",
+                "from": "Los Angeles",
+                "to": "Washington"
+              }
+            ]
+        },
+        {
+            "from": "Malaga",
+            "to": "Paris",
+            "path": [
+              {
+                "transport_type": "airplane",
+                "from": "Malaga",
+                "to": "Madrid"
+              },
+              {
+                "transport_type": "train",
+                "from": "Madrid",
+                "to": "Paris"
+              }
+            ]
+        }
+    ]
+}

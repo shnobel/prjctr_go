@@ -1,11 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"os"
+	"prjctr_go/utils"
 )
 
 const DASH = "-----------------------------------------------------------------------------------------------"
@@ -159,29 +158,11 @@ func (o *Option) PrintInfo(index int) {
 	fmt.Printf("%v: %v\n", index+1, o.Text)
 }
 
-func getQuestDataFromJson(fileName string) (*Quest, error) {
-	jsonFile, err := os.Open(fileName)
-	if err != nil {
-		return nil, errors.New(err.Error())
-	}
-
-	defer jsonFile.Close()
-
-	byteValue, err := io.ReadAll(jsonFile)
-	if err != nil {
-		return nil, errors.New(err.Error())
-	}
-
-	var quest Quest
-	json.Unmarshal(byteValue, &quest)
-	return &quest, nil
-}
-
 func main() {
 
 	var quest *Quest
 
-	quest, err := getQuestDataFromJson("quest.json")
+	quest, err := utils.GetDataFromJson[Quest]("quest.json")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
